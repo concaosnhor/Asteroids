@@ -1,0 +1,13 @@
+- Thời gian chờ 1 màn . 
+- Độ khó
+- Điểm
+- Mạng 
+- Menu 
+- them class kế thừa entity : item,
+ + vật phẩm có lợi , {
+	+ Khiên ( - 3 giây bất từ, vòng tròn máy bay
+	player()	} 
+class bullet ( _ Ba tia, combo  )
+
+- Tách file 
+
