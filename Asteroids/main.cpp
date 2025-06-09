@@ -61,8 +61,7 @@ int main() {
 
     if (!app.isOpen()) return 0;
 
-    // Nếu muốn dùng âm thanh trong Game, bạn có thể truyền AudioManager vào Game (nếu bạn sửa Game để nhận)
-    // Ví dụ giả định Game có constructor Game(sf::RenderWindow&, AudioManager&)
+    /
     Game game(app /*, audio*/);  // Nếu game không nhận audio, giữ nguyên
 
     game.init();
