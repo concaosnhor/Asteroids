@@ -133,30 +133,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Asteroid.h" />
-    <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="Display.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Globals.h" />
-    <ClInclude Include="Level.h" />
+    <ClInclude Include="HighScores.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Asteroids.cpp" />
-    <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Display.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="HighScores.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

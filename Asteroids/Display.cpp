@@ -1,73 +1,50 @@
 ﻿#include "Display.h"
-#include <iostream>
-#include <iomanip>
+#include <string>
 #include <sstream>
+#include <iomanip> // Thêm để dùng std::setw và std::setfill
 
-Display::Display()
-    : elapsedTime(0.f), showCoin(true)  // khởi tạo biến showCoin
-{
-    // Constructor có thể để trống hoặc để những phần khởi tạo mặc định khác
-}
-
-void Display::init() {
+Display::Display() {
     if (!font.loadFromFile("fonts/Emulator.otf")) {
-        // Xử lý lỗi font, ví dụ:
-        std::cerr << "Error loading font Emulator.otf\n";
+        // Thông báo lỗi nếu không tải được font
+        std::cerr << "Failed to load font: fonts/Emulator.otf" << std::endl;
     }
-    textScore.setFont(font);
-    textScore.setCharacterSize(20);
-    textScore.setFillColor(sf::Color::White);
-    textScore.setPosition(10.f, 10.f);
 
-    textCoin.setFont(font);
-    textCoin.setCharacterSize(20);
-    textCoin.setFillColor(sf::Color::Yellow);
-    textCoin.setPosition(10.f, 40.f);
+    // Cài đặt văn bản cho điểm
+    scoreText.setFont(font);
+    scoreText.setCharacterSize(24);
+    scoreText.setFillColor(sf::Color::Yellow);
+    scoreText.setPosition(10.f, 10.f);
 
-    textLives.setFont(font);
-    textLives.setCharacterSize(20);
-    textLives.setFillColor(sf::Color::Green);
-    textLives.setPosition(10.f, 70.f);
+    // Cài đặt văn bản cho mạng
+    livesText.setFont(font);
+    livesText.setCharacterSize(24);
+    livesText.setFillColor(sf::Color::Red);
+    livesText.setPosition(10.f, 40.f);
 
-    textTime.setFont(font);
-    textTime.setCharacterSize(20);
-    textTime.setFillColor(sf::Color::Cyan);
-    textTime.setPosition(10.f, 100.f);
+    // Cài đặt văn bản cho thời gian
+    timeText.setFont(font);
+    timeText.setCharacterSize(24);
+    timeText.setFillColor(sf::Color::Blue);
+    timeText.setPosition(10.f, 70.f);
 }
 
-void Display::setScore(int score) {
-    textScore.setString("Score: " + std::to_string(score));
-}
+void Display::update(int score, int lives, sf::Time elapsedTime) {
+    scoreText.setString("Score: " + std::to_string(score));
+    livesText.setString("Lives: " + std::to_string(lives));
 
-void Display::setCoin(int coin) {
-    textCoin.setString("Coin: " + std::to_string(coin));
-}
+    int totalSeconds = static_cast<int>(elapsedTime.asSeconds());
+    int minutes = totalSeconds / 60;
+    int seconds = totalSeconds % 60;
 
-void Display::setLives(int lives) {
-    textLives.setString("Lives: " + std::to_string(lives));
-}
+    std::ostringstream oss;
+    oss << "Time: " << std::setw(2) << std::setfill('0') << minutes
+        << ":" << std::setw(2) << std::setfill('0') << seconds;
 
-void Display::setElapsedTime(float seconds) {
-    elapsedTime = seconds;
-
-    int mins = static_cast<int>(elapsedTime) / 60;
-    int secs = static_cast<int>(elapsedTime) % 60;
-
-    std::stringstream ss;
-    ss << "Time: " << mins << ":" << std::setw(2) << std::setfill('0') << secs;
-
-    textTime.setString(ss.str());
-}
-
-void Display::setShowCoin(bool show) {
-    showCoin = show;
+    timeText.setString(oss.str());
 }
 
 void Display::draw(sf::RenderWindow& window) {
-    window.draw(textScore);
-    if (showCoin) {
-        window.draw(textCoin);
-    }
-    window.draw(textLives);
-    window.draw(textTime);
+    window.draw(scoreText);
+    window.draw(livesText);
+    window.draw(timeText);
 }

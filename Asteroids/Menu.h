@@ -4,49 +4,34 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#define MAX_NUMBER_OF_ITEMS 4
+#define MAX_NUMBER_OF_ITEMS 5
 
 class Menu {
+private:
+    int selectedItemIndex;                        // Mục menu đang được chọn
+    int numberOfItems;                            // Số lượng mục menu thực tế
+    sf::Font font;                                // Font chữ
+    sf::Text menu[MAX_NUMBER_OF_ITEMS];           // Các mục menu
+
+    sf::RectangleShape background;                // Hình nền (có thể dùng texture hoặc màu)
+    sf::Texture backgroundTexture;                // Texture nền
+    bool useTexture;                              // Cờ kiểm tra có dùng texture không
+
 public:
     Menu(float width, float height);
     ~Menu();
 
-    void draw(sf::RenderWindow& window);
-    void MoveUp();
-    void MoveDown();
+    void draw(sf::RenderWindow& window);          // Vẽ menu
+    void MoveUp();                                // Di chuyển lên
+    void MoveDown();                              // Di chuyển xuống           // Đặt lại mục đang chọn
 
-    int GetPressedItem() const { return selectedItemIndex; }
+    int getSelectedIndex() const;
 
-    void setNumberOfItems(int num);
-    void setMenuItemString(int index, const std::string& str);
-    void updateMenuPositions(float width);
+    void setNumberOfItems(int num);               // Thiết lập số mục menu sử dụng thực tế
+    void setMenuItemString(int index, const std::string& str);  // Đổi nội dung mục menu
 
-    sf::Vector2f getMenuItemPosition(int index) const;
-    void setMenuItemPosition(int index, const sf::Vector2f& pos);
-
-    void setCoin(int c);
-    void setScore(int s);
-
-private:
-    int selectedItemIndex;
-    int numberOfItems;
-
-    sf::Font font;
-    sf::Text menu[MAX_NUMBER_OF_ITEMS];
-    sf::Text coinText;
-    sf::Text scoreText;
-
-    int coin;
-    int score;
-
-    sf::RectangleShape background;
-    sf::Texture backgroundTexture;
-    bool useTexture;
-
-    // Các vị trí y cố định dùng để căn menu item
-    float y_positions[MAX_NUMBER_OF_ITEMS] = { 175.f, 265.f, 355.f, 445.f };
-    float center_x = 295.f;
-    float offsetY = 160.f;
+    void updateMenuPositions(float width);        // Cập nhật lại vị trí menu chính
+    void updateGameOverMenuPositions(float width);// Cập nhật lại vị trí menu Game Over
 };
 
 #endif // MENU_H

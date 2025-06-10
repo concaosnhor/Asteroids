@@ -2,35 +2,25 @@
 #define DISPLAY_H
 
 #include <SFML/Graphics.hpp>
-#include <string>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 class Display {
 private:
     sf::Font font;
-    sf::Text textScore;
-    sf::Text textCoin;
-    sf::Text textLives;
-    sf::Text textTime;
-
-    int score;
-    int coin;
-    int lives;
-    float elapsedTime;
-
-    bool showCoin;
+    sf::Text livesText, scoreText, timeText;
 
 public:
-    Display();
+    int lives = 1;
+    int score = 0;
+    float remainingTime = 90.f; // giây
 
-    void init();
-
-    void setScore(int s);
-    void setCoin(int c);
-    void setLives(int l);
-    void setElapsedTime(float t);
-    void setShowCoin(bool show);
-
-    void draw(sf::RenderWindow& window);
+    Display();                                 // Constructor
+    void update(int newLives, int newScore, sf::Time timeLeft);
+    // Cập nhật văn bản hiển thị
+    void draw(sf::RenderWindow& window);       // Vẽ lên cửa sổ
+    void reset(int newLives = 1, int newScore = 0, float newTime = 90.f); // Reset
 };
 
 #endif // DISPLAY_H
