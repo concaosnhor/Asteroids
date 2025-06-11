@@ -1,6 +1,4 @@
-﻿// Menu.cpp
-
-#include "Menu.h"
+﻿#include "Menu.h"
 #include <iostream>
 
 Menu::Menu(float width, float height) : selectedItemIndex(0), numberOfItems(MAX_NUMBER_OF_ITEMS) {

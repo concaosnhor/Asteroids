@@ -193,7 +193,7 @@ int main() {
 
     srand(static_cast<unsigned int>(time(0)));
 
-    RenderWindow app(VideoMode(W, H), "Asteroids with Menu");
+    RenderWindow app(VideoMode(W, H), "Asteroids");
     app.setFramerateLimit(60);
 
     Menu menu(W, H);
@@ -322,8 +322,7 @@ int main() {
                         }
 
                         else if (selected == 1) {
-                            HighScore hs("highscores.txt");
-                            hs.loadScores();  // <--- Bước quan trọng!
+                            ;
                             currentState = GameState::HIGH_SCORES;
                         }
 
@@ -352,10 +351,11 @@ int main() {
             else if (currentState == GameState::GAME_OVER) {
                 if (!scoreSaved) {
                     HighScore hs("highscores.txt");
-                    hs.addScore("Top", display.score);
-                    hs.saveScores();// hoặc nhận tên từ người chơi                    
+                    hs.addScore(display.score);  // ✔️ Không còn tên
+                    hs.saveScores();
                     scoreSaved = true;
                 }
+
                 else if (!printedFinalScore) {
                     std::cout << "Final Score: " << display.score << std::endl;
                     printedFinalScore = true;
@@ -378,6 +378,7 @@ int main() {
                         }
                         else if (selected == 1) {
                             resetGame();
+                            scoreSaved = false;
                             currentState = GameState::MENU;
                         }
                         else if (selected == 2) {
@@ -421,8 +422,8 @@ int main() {
             display.update(display.score, display.lives, elapsed);
 
             // ===== LOGIC GAME =====
-            if (Keyboard::isKeyPressed(Keyboard::Right)) p->angle += 3.f;
-            if (Keyboard::isKeyPressed(Keyboard::Left)) p->angle -= 3.f;
+            if (Keyboard::isKeyPressed(Keyboard::Right)) p->angle += 3.f; // xoay phải
+            if (Keyboard::isKeyPressed(Keyboard::Left))  p->angle -= 3.f; // xoay trái
             p->thrust = Keyboard::isKeyPressed(Keyboard::Up);
 
             for (auto a : entities)
@@ -431,7 +432,7 @@ int main() {
                         a->life = b->life = false;
                         Entity* e = new Entity();
                         e->settings(sExplosion, a->x, a->y);
-                        e->name = "explosion";
+                        e->name = " explosion";
                         entities.push_back(e);
                         audio.playSound("explosion");
                         display.score += 10;
@@ -541,41 +542,18 @@ int main() {
             hintText.setPosition(W / 2.f - hintText.getGlobalBounds().width / 2.f, H - 60);
             app.draw(hintText);
 
-            // Ghi điểm vào file nếu chưa ghi
-            if (!scoreSaved) {
-                HighScore hs("highscores.txt");
-                hs.loadScores();
-
-                // Lấy số lượng điểm hiện có
-                int nextRank = hs.getTopScores(1000).size() + 1;
-
-                // Thêm điểm mới với tên tùy chỉnh
-                std::string playerName = "Player " + std::to_string(nextRank); // hoặc "You"
-                hs.addScore(playerName, display.score);
-
-                hs.saveScores();
-
-                scoreSaved = true;
-            }
-
         }
 
         else if (currentState == GameState::HIGH_SCORES) {
             app.clear();
 
             HighScore manager("highscores.txt");
-            manager.addScore("Player", display.score);  // currentScore là int bạn đã tính trước đó
-            auto topScores = manager.getTopScores(10);  // Lấy top 10
 
-            sf::Text title("Top 10 High Scores", font, 40);
-            title.setFillColor(sf::Color::White);
-            title.setPosition(W / 2.f - title.getGlobalBounds().width / 2.f, 50);
-            app.draw(title);
+            auto topScores = manager.getTopScores(10);
 
             for (size_t i = 0; i < topScores.size(); ++i) {
-                std::string line = "Top " + std::to_string(i + 1) + ": " +
-                    topScores[i].first + " - " +
-                    std::to_string(topScores[i].second);
+                int score = topScores[i];
+                std::string line = std::to_string(i + 1) + ". " + std::to_string(score);
 
                 sf::Text scoreText(line, font, 28);
                 scoreText.setFillColor(sf::Color::Yellow);
@@ -584,14 +562,13 @@ int main() {
             }
 
 
-
-
             sf::Text hint("Press Escape to return", font, 20);
             hint.setFillColor(sf::Color(200, 200, 200));
             hint.setPosition(W / 2.f - hint.getGlobalBounds().width / 2.f, H - 60);
             app.draw(hint);
 
         }
+
         app.display();
     }
 
